@@ -20,11 +20,13 @@ This application prevents AFK (Away From Keyboard) status in the game "Final Fan
 1. **Download** the `Anti-AFK.exe` from the ![releases](https://github.com/sevu11/ffxiv-anti-afk/releases/latest) section or compile from source using pyinstaller.
 
 ### Running the Application
+```
 - Double-click `Anti-AFK.exe` to launch the application.
-- Click on the "START" button to start, the application will send in a CTRL input every 10 minutes.
-- Click on the "STOP" button to end the anti-AFK mechanism.
+- Click on the "START" button to start, the application will send selected key every 10 minutes (default: CTRL)
+- Click on the "STOP" button to stop the application.
 - Click on the "EXIT" button or close the window to quit the application.
-- Update which key you wish to send. Default key is `CTRL`. 
+- (Optional): Select key from the dropdown (default: CTRL)
+```
 
 ### Build yourself
 - Run `./build.ps1` to compile the app yourself.
