@@ -18,9 +18,25 @@ foreach ($file in $filesToCopy) {
         Copy-Item -Path $srcPath -Destination $dstPath -Force -ErrorAction Stop
     }
     catch {
-        Write-Error "Failed to copy $file: $_"
+        Write-Error ("Failed to copy {0}: {1}" -f $file, $_)
         exit 1
     }
 }
 
 Write-Output "Build completed successfully."
+
+$buildDir = ".\build"
+if (Test-Path $buildDir -PathType Container) {
+    Remove-Item -Path $buildDir -Recurse -Force
+}
+
+$specFile = "FFXIV Anti-AFK.spec"
+if (Test-Path $specFile -PathType Leaf) {
+    Remove-Item -Path $specFile -Force
+}
+
+$configFile = ".\dist\config.json"
+$configContent = '{"key": "ctrl"}'
+$configContent | Set-Content -Path $configFile -Force
+
+Write-Output "Removed old files."

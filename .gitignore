@@ -4,3 +4,5 @@
 logo.psd
 /dist/Anti-AFK.exe
 *.spec
+/__pycache__/
+*.log
