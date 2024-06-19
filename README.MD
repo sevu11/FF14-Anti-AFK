@@ -3,9 +3,10 @@
 # FFXIV Anti-AFK
 
 ## Changelog:
-- 1.2 Updated UI and added logs.
+```- 1.2 Updated UI and added logs.
 - 1.1 Added input for key and store input to a json file for automatic loading on start. Some re-structure of the code logic.
 - 1.0 First release
+```
 
 ## Overview
 This application prevents AFK (Away From Keyboard) status in the game "Final Fantasy XIV" by periodically sending keypresses.
