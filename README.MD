@@ -37,5 +37,9 @@ This application prevents AFK (Away From Keyboard) status in the game "Final Fan
 ## Contributing
 Contributions are welcome! Fork the repository and submit a pull request with your enhancements.
 
+## Note on FFXIV TOS
+This application is against TOS as a third-party application. Use at your own risk!
+The application only send a key input to the game though, so the risk of getting detected or caught is very slim.
+
 ## License
 This project is licensed under the MIT License - see the `LICENSE` file for details.
