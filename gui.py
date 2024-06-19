@@ -76,7 +76,7 @@ class Anti_AFK_GUI:
         if not os.path.exists(self.logs_dir):
             os.makedirs(self.logs_dir)
         
-        self.log_file = os.path.join(self.logs_dir, "app.log")
+        self.log_file = os.path.join(self.logs_dir, datetime.now().strftime("%Y-%m-%d") + ".log")
         self.is_running = False
         self.interval = 10 * 60
         self.target_window_title = "FINAL FANTASY XIV"
@@ -87,8 +87,8 @@ class Anti_AFK_GUI:
         self.root.after(5000, self.hide_alert)
 
     def log_message(self, message):
-        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        full_message = f"{timestamp} - {message}"
+        timestamp = datetime.now().strftime('%H:%M:%S')
+        full_message = f"[{timestamp}] - {message}"
         self.log_text.insert(tk.END, full_message + '\n')
         self.log_text.see(tk.END)
         with open(self.log_file, "a") as log:

@@ -4,9 +4,10 @@
 
 ## Changelog:
 ```
-- 1.2 Updated UI and added logs.
-- 1.1 Added input for key and store input to a json file for automatic loading on start. Some re-structure of the code logic.
-- 1.0 First release
+- 1.3.0.0 Updated log behavior and store logs by date for easier visiblity and troubleshooting
+- 1.2.0.0 Updated UI and added logs.
+- 1.1.0.0 Added input for key and store input to a json file for automatic loading on start. Some re-structure of the code logic.
+- 1.0.0.0 First release
 ```
 
 ## Overview
