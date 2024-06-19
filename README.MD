@@ -3,8 +3,6 @@
 ## Overview
 This application prevents AFK (Away From Keyboard) status in the game "Final Fantasy XIV" by periodically sending keypresses.
 
-![Demo](https://github.com/sevu11/ffxiv-anti-afk/blob/main/demo.png)
-
 ## Usage
 
 ### Installation
