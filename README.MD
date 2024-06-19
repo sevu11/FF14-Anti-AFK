@@ -14,7 +14,7 @@ This application prevents AFK (Away From Keyboard) status in the game "Final Fan
 ## Usage
 
 ### Installation
-1. **Download** the `Anti-AFK.exe` from the releases section or compile from source using pyinstaller.
+1. **Download** the `Anti-AFK.exe` from the ![releases](https://github.com/sevu11/ffxiv-anti-afk/releases/latest) section or compile from source using pyinstaller.
 
 ### Running the Application
 - Double-click `Anti-AFK.exe` to launch the application.
