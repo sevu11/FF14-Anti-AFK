@@ -2,11 +2,12 @@
 /dist/*
 /dist/
 logo.psd
-/dist/Anti-AFK.exe
+/dist/Anti-AFK.*
 *.spec
 /__pycache__/
 *.log
 workflow.ps1
-create_release.ps1
+create_release.*
 version.txt
 /releases/*
+build_version.*
