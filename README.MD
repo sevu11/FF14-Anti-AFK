@@ -13,7 +13,7 @@
 ## Overview
 This application prevents AFK (Away From Keyboard) status in the game "Final Fantasy XIV" by periodically sending keypresses.
 
-![Demo](https://i.imgur.com/wZL9UIi.png)
+![Demo](https://i.imgur.com/VgwqnBv.png)
 
 ## Usage
 
