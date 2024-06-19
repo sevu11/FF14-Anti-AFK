@@ -11,3 +11,4 @@ create_release.*
 version.txt
 /releases/*
 build_version.*
+config.json

@@ -41,20 +41,43 @@ class Anti_AFK_GUI:
 
         self.quit_button = tk.Button(root, image=self.quit_img, command=self.quit_app, borderwidth=0, highlightthickness=0,
                                      highlightbackground='#333333', highlightcolor='#333333')
-        self.quit_button.pack(pady=20)
+        self.quit_button.pack(pady=10)
+
+        separator = tk.Frame(root, height=2, bd=0, relief='sunken', bg='#333333')
+        separator.pack(fill='x', pady=20)
 
         self.key_label = tk.Label(root, text="Select Key:", bg='#333333', fg='white', font=self.label_bold_font)
         self.key_label.pack(pady=(0,2), padx=(0,2))
 
         self.key_var = tk.StringVar()
-        self.key_dropdown = ttk.Combobox(root, textvariable=self.key_var, font=self.bold_font, justify="center", width=15)
+        self.key_dropdown = ttk.Combobox(root, textvariable=self.key_var, 
+                                         font=self.bold_font, 
+                                         justify="center", 
+                                         width=15, 
+                                         background='white', 
+                                         foreground='black')
         self.key_dropdown['values'] = ('Select Key', 'CTRL', 'ALT', 'W', 'A', 'S', 'D', 'SHIFT', '§', '<')
         self.key_dropdown.pack(pady=(20, 20))  
 
+        combostyle = ttk.Style()
+        combostyle.theme_use('xpnative')
+        combostyle.configure('Custom.TCombobox', selectbackground='white', fieldbackground='white', foreground='black')
+        combostyle.map('Custom.TCombobox', fieldbackground=[('readonly', 'white')])
+                
         load_key(self.key_var)
 
-        self.save_button = tk.Button(root, text="Save", command=self.save_key_wrapper, bg='#444444', fg='white', font=self.bold_font)
-        self.save_button.pack(pady=20)
+        self.save_button = tk.Button(root, text="Save", 
+                                     command=self.save_key_wrapper, 
+                                     bg='#0b5fd9', 
+                                     fg='white', 
+                                     font=self.bold_font, 
+                                     bd=0, 
+                                     width=17,
+                                     highlightthickness=0,
+                                     activebackground='#2E59A3',
+                                     activeforeground='white')
+        
+        self.save_button.pack(padx=20, pady=20)
 
         self.alert_label = tk.Label(root, text="", bg='#444444', fg='white', pady=20, font=self.bold_font)
         self.alert_label.pack(pady=(20, 20))
@@ -63,8 +86,8 @@ class Anti_AFK_GUI:
         self.log_frame = tk.Frame(root)
         self.log_frame.pack(fill=tk.BOTH, expand=False)
 
-        log_text_width = 0
-        self.log_text = tk.Text(self.log_frame, wrap=tk.WORD, bg='#444444', fg='white', font=('Consolas', 12), height=10, width=log_text_width)
+        log_text_width = 5
+        self.log_text = tk.Text(self.log_frame, wrap=tk.WORD, bg='#444444', fg='white', font=('Consolas', 10), height=10, width=log_text_width, bd=0, padx=10, pady=5)
         self.log_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         self.log_scrollbar = tk.Scrollbar(self.log_frame, command=self.log_text.yview)
