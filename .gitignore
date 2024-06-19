@@ -6,3 +6,7 @@ logo.psd
 *.spec
 /__pycache__/
 *.log
+workflow.ps1
+create_release.ps1
+version.txt
+/releases/*

@@ -22,8 +22,6 @@ def load_key(key_var):
                 default_key = key_from_config
         except Exception as e:
             print(f"Error loading key from config file: {e}")
-    else:
-        print("Config file 'config.json' not found.")
     
     key_var.set(default_key)
 

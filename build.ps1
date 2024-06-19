@@ -1,42 +1,60 @@
-$pyinstallerCommand = "pyinstaller main.py --onefile --name 'Anti-AFK' --icon=icon.ico"
+$pyinstallerCommand = "pyinstaller main.py --onefile --name 'Anti-AFK' --icon=assets/icon.ico --version-file=version.txt"
+# $pyinstallerCommand = "pyinstaller main.py --onefile --name 'Anti-AFK' --icon=assets/icon.ico"
 
-Write-Output "Running build command. Please wait..."
+Write-Output "Running PyInstaller command. Please wait..."
 try {
     Invoke-Expression $pyinstallerCommand
 }
 catch {
-    Write-Error "Build command failed: $_"
+    Write-Error "PyInstaller command failed: $_"
     exit 1
 }
 
 $distDir = ".\dist"
-$filesToCopy = @("start.png", "stop.png", "quit.png", "logo.png", "icon.ico", "config.json")
+$assetsDir = Join-Path $distDir "assets"
+
+if (-not (Test-Path $assetsDir -PathType Container)) {
+    New-Item -ItemType Directory -Path $assetsDir | Out-Null
+    Write-Output "Created '$assetsDir'."
+}
+
+$filesToCopy = @("start.png", "stop.png", "quit.png", "logo.png")
+
 foreach ($file in $filesToCopy) {
-    $srcPath = ".\$file"
-    $dstPath = "$distDir\$file"
-    try {
+    $srcPath = Join-Path ".\assets" $file
+    $dstPath = Join-Path $assetsDir $file
+    if (Test-Path $srcPath -PathType Leaf) {
         Copy-Item -Path $srcPath -Destination $dstPath -Force -ErrorAction Stop
+        Write-Output "Copied '$srcPath' to '$dstPath'."
     }
-    catch {
-        Write-Error ("Failed to copy {0}: {1}" -f $file, $_)
-        exit 1
+    else {
+        Write-Error "File '$file' not found in '.\assets'. Skipping copy."
     }
 }
 
-Write-Output "Build completed successfully."
+$configFileSrc = ".\config.json"
+if (Test-Path $configFileSrc -PathType Leaf) {
+    $configFileDst = Join-Path $distDir "config.json"
+    Copy-Item -Path $configFileSrc -Destination $configFileDst -Force -ErrorAction Stop
+    Write-Output "Copied 'config.json' to '$configFileDst'."
+}
+else {
+}
 
 $buildDir = ".\build"
 if (Test-Path $buildDir -PathType Container) {
     Remove-Item -Path $buildDir -Recurse -Force
 }
 
-$specFile = "FFXIV Anti-AFK.spec"
+$specFile = "Anti-AFK.spec"
 if (Test-Path $specFile -PathType Leaf) {
     Remove-Item -Path $specFile -Force
 }
 
-$configFile = ".\dist\config.json"
-$configContent = '{"key": "ctrl"}'
-$configContent | Set-Content -Path $configFile -Force
+$buildDirDst = ".\build"
+if (Test-Path $buildDirDst -PathType Container) {
+    Remove-Item -Path $buildDirDst -Recurse -Force
+}
+Move-Item -Path $distDir -Destination $buildDirDst -Force
 
-Write-Output "Removed old files."
+Write-Output "Build process completed successfully."
