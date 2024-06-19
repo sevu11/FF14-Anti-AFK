@@ -1,4 +1,4 @@
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/sevu11/ffxiv-anti-afk/total) ![GitHub forks](https://img.shields.io/github/forks/sevu11/ffxiv-anti-afk)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/sevu11/ffxiv-anti-afk/total)
 
 # FFXIV Anti-AFK
 
