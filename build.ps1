@@ -1,5 +1,5 @@
-$pyinstallerCommand = "pyinstaller main.py --onefile --name 'Anti-AFK' --icon=assets/icon.ico --version-file=version.txt"
-# $pyinstallerCommand = "pyinstaller main.py --onefile --name 'Anti-AFK' --icon=assets/icon.ico"
+# $pyinstallerCommand = "pyinstaller main.py --onefile --name 'Anti-AFK' --icon=assets/icon.ico --version-file=version.txt"
+$pyinstallerCommand = "pyinstaller main.py --onefile --name 'Anti-AFK' --icon=assets/icon.ico"
 
 Write-Output "Running PyInstaller command. Please wait..."
 try {
