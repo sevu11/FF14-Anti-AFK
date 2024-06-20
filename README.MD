@@ -4,6 +4,7 @@
 
 ## Changelog:
 ```
+- v1.4.0 Updated to CTK package to update UI to more modern looking. No changes to the application.
 - v1.3.0 Updated log behavior and store logs by date for easier visiblity and troubleshooting
 - v1.2.0 Updated UI and added logs.
 - v1.1.0 Added input for key and store input to a json file for automatic loading on start. Some re-structure of the code logic.
