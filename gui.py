@@ -6,7 +6,7 @@ import pygetwindow as gw
 import time
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from PIL import Image, ImageTk
 from utils import load_key, save_key
 
@@ -86,7 +86,7 @@ class Anti_AFK_GUI:
         self.is_running = False
         self.interval = 10 * 60
         self.target_window_title = "FINAL FANTASY XIV"
-        
+                
     def show_alert(self, message):
         self.alert_label.config(text=message)
         self.alert_label.pack(pady=25, padx=25)
@@ -118,8 +118,11 @@ class Anti_AFK_GUI:
                     pyautogui.keyDown(self.key_var.get().lower())
                     time.sleep(0.1)
                     pyautogui.keyUp(self.key_var.get().lower())
-                    self.log_message(f"Sent {self.key_var.get()}.")
-
+                    self.log_message(f"Sent {self.key_var.get()} key.")
+                    
+                end_time = datetime.now() + timedelta(seconds=self.interval)
+                self.log_message(f"On cooldown until [{end_time.strftime('%H:%M:%S')}]...")
+                        
                 for _ in range(iterations):
                     if not self.is_running:
                         break
