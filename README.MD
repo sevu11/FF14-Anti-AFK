@@ -44,7 +44,7 @@ This application is against TOS as a third-party application. Use at your own ri
 
 ## To do
 
-[ ] Add Linux/MacOS support
+[ x ] Add Linux/MacOS support
 
 ## License
 This project is licensed under the MIT License - see the `LICENSE` file for details.
