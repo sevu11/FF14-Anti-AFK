@@ -42,5 +42,9 @@ Contributions are welcome! Fork the repository and submit a pull request with yo
 ## Note on FFXIV TOS
 This application is against TOS as a third-party application. Use at your own risk!
 
+## To do
+
+[] Add Linux/MacOS support
+
 ## License
 This project is licensed under the MIT License - see the `LICENSE` file for details.
