@@ -2,13 +2,14 @@ import customtkinter as ctk
 import tkinter as tk
 import threading
 import pyautogui
-import pygetwindow as gw
 import time
 import json
 import os
 from datetime import datetime, timedelta
 from PIL import Image, ImageTk
 from utils import load_key, save_key
+from Xlib import X, display
+from ewmh import EWMH
 
 class Anti_AFK_GUI:
     def __init__(self, root):
@@ -111,23 +112,45 @@ class Anti_AFK_GUI:
     def send_key(self):
         interval_check = 1
         iterations = self.interval // interval_check
+        ewmh = EWMH()
+        
         while self.is_running:
             try:
-                target_windows = gw.getWindowsWithTitle(self.target_window_title)
-                for window in target_windows:
+                # Get all windows
+                root = display.Display().screen().root
+                window_ids = root.get_full_property(
+                    ewmh.display.intern_atom('_NET_CLIENT_LIST'), X.AnyPropertyType
+                ).value
+                
+                target_window_found = False
+                
+                # Iterate over all windows and check their titles
+                for window_id in window_ids:
+                    window = ewmh.display.create_resource_object('window', window_id)
+                    window_title = window.get_full_property(
+                        ewmh.display.intern_atom('_NET_WM_NAME'), 0
+                    ).value
+                    if window_title.decode('utf-8') == self.target_window_title:
+                        target_window_found = True
+                        break
+
+                if target_window_found:
                     pyautogui.keyDown(self.key_var.get().lower())
                     time.sleep(0.1)
                     pyautogui.keyUp(self.key_var.get().lower())
                     self.log_message(f"Sent {self.key_var.get()} key.")
                     
-                end_time = datetime.now() + timedelta(seconds=self.interval)
-                self.log_message(f"On cooldown until [{end_time.strftime('%H:%M:%S')}]...")
-                        
-                for _ in range(iterations):
-                    if not self.is_running:
-                        break
+                    end_time = datetime.now() + timedelta(seconds=self.interval)
+                    self.log_message(f"On cooldown until [{end_time.strftime('%H:%M:%S')}]...")
+                            
+                    for _ in range(iterations):
+                        if not self.is_running:
+                            break
+                        time.sleep(interval_check)
+                else:
+                    self.log_message("Target window not found.")
                     time.sleep(interval_check)
-            except gw.PyGetWindowException as e:
+            except Exception as e:
                 self.log_message(f"Error occurred: {e}")
 
     def start_sending(self):
@@ -162,3 +185,9 @@ class Anti_AFK_GUI:
         if hasattr(self, 'thread') and self.thread.is_alive():
             self.thread.join()
         self.root.destroy()
+
+# Create the main application window and run the GUI
+if __name__ == '__main__':
+    root = ctk.CTk()
+    app = Anti_AFK_GUI(root)
+    root.mainloop()

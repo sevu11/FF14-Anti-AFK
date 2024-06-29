@@ -4,6 +4,7 @@
 
 ## Changelog:
 ```
+- v1.5.0 Added Linux and MacOS support. See Release for instructions
 - v1.4.0 Updated to CTK package to update UI to more modern looking. No changes to the application.
 - v1.3.0 Updated log behavior and store logs by date for easier visiblity and troubleshooting
 - v1.2.0 Updated UI and added logs.

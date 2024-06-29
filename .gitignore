@@ -12,3 +12,7 @@ version.txt
 /releases/*
 build_version.*
 config.json
+/linux/venv
+/linux/__pycache__/
+/linux/logs
+/venv
