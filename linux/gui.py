@@ -7,11 +7,12 @@ import json
 import os
 from datetime import datetime, timedelta
 from PIL import Image, ImageTk
-from utils import load_key, save_key
+from utils import *
 from Xlib import X, display
 from ewmh import EWMH
 from pynput import keyboard
-import subprocess 
+import subprocess  # Add this import
+
 
 class Anti_AFK_GUI:
     def __init__(self, root):
@@ -90,22 +91,12 @@ class Anti_AFK_GUI:
         self.interval = 10 * 60
         self.target_window_title = "FINAL FANTASY XIV"
 
-        self.keybind = keyboard.Key.f12  # Default value
-        self.load_config()  # Load config values
+        self.keybind = load_start_stop_key()  # Load start/stop key from config
 
         self.listener_thread = threading.Thread(target=self.key_listener)
         self.listener_thread.daemon = True
         self.listener_thread.start()
                 
-    def load_config(self):
-        try:
-            with open('config.json', 'r') as config_file:
-                config = json.load(config_file)
-                self.key_var.set(config.get("key", "CTRL"))
-                self.keybind = getattr(keyboard.Key, config.get("start_stop_key", "F12").lower())
-        except Exception as e:
-            self.log_message(f"Error loading config: {e}")
-        
     def show_alert(self, message):
         self.alert_label.config(text=message)
         self.alert_label.pack(pady=25, padx=25)
@@ -160,7 +151,7 @@ class Anti_AFK_GUI:
                     
                     end_time = datetime.now() + timedelta(seconds=self.interval)
                     self.log_message(f"On cooldown until [{end_time.strftime('%H:%M:%S')}]...")
-                            
+                    
                     for _ in range(iterations):
                         if not self.is_running:
                             break
@@ -173,52 +164,29 @@ class Anti_AFK_GUI:
 
     def start_sending(self):
         self.is_running = True
-        
-        load_key(self.key_var)
-        
-        if self.key_var.get() == 'Select Key':
-            self.key_var.set('CTRL')
-            save_key('ctrl')
-        else:
-            save_key(self.key_var.get().lower())
-        
         self.start_button.configure(state=tk.DISABLED)
         self.stop_button.configure(state=tk.NORMAL)
-        
-        self.thread = threading.Thread(target=self.send_key)
-        self.thread.start()
-        
-        self.log_message("Started")
+        self.log_message("Started sending key.")
+        self.send_thread = threading.Thread(target=self.send_key)
+        self.send_thread.start()
 
     def stop_sending(self):
         self.is_running = False
         self.start_button.configure(state=tk.NORMAL)
         self.stop_button.configure(state=tk.DISABLED)
-        if self.thread.is_alive():
-            self.thread.join()
-        self.log_message("Stopped")
+        self.log_message("Stopped sending key.")
 
     def quit_app(self):
-        self.is_running = False
-        if hasattr(self, 'thread') and self.thread.is_alive():
-            self.thread.join()
-        self.root.destroy()
-    
-    def on_key_press(self, key):
-        try:
+        self.stop_sending()
+        self.root.quit()
+        
+    def key_listener(self):
+        def on_press(key):
             if key == self.keybind:
                 if self.is_running:
                     self.stop_sending()
                 else:
                     self.start_sending()
-        except Exception as e:
-            self.log_message(f"Error in key listener: {e}")
-
-    def key_listener(self):
-        with keyboard.Listener(on_press=self.on_key_press) as listener:
+        
+        with keyboard.Listener(on_press=on_press) as listener:
             listener.join()
-
-if __name__ == "__main__":
-    root = ctk.CTk()
-    app = Anti_AFK_GUI(root)
-    root.mainloop()
