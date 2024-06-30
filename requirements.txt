@@ -3,3 +3,4 @@ PyAutoGUI==0.9.54
 PyGetWindow==0.0.9
 pyinstaller==6.8.0
 customtkinter==5.2.2
+pynput==1.7.7

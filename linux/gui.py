@@ -10,6 +10,7 @@ from PIL import Image, ImageTk
 from utils import load_key, save_key
 from Xlib import X, display
 from ewmh import EWMH
+from pynput import keyboard
 
 class Anti_AFK_GUI:
     def __init__(self, root):
@@ -87,6 +88,12 @@ class Anti_AFK_GUI:
         self.is_running = False
         self.interval = 10 * 60
         self.target_window_title = "FINAL FANTASY XIV"
+        self.keybind = keyboard.Key.f12
+
+        
+        self.listener_thread = threading.Thread(target=self.key_listener)
+        self.listener_thread.daemon = True
+        self.listener_thread.start()
                 
     def show_alert(self, message):
         self.alert_label.config(text=message)
@@ -116,7 +123,6 @@ class Anti_AFK_GUI:
         
         while self.is_running:
             try:
-                # Get all windows
                 root = display.Display().screen().root
                 window_ids = root.get_full_property(
                     ewmh.display.intern_atom('_NET_CLIENT_LIST'), X.AnyPropertyType
@@ -124,7 +130,6 @@ class Anti_AFK_GUI:
                 
                 target_window_found = False
                 
-                # Iterate over all windows and check their titles
                 for window_id in window_ids:
                     window = ewmh.display.create_resource_object('window', window_id)
                     window_title = window.get_full_property(
@@ -185,9 +190,17 @@ class Anti_AFK_GUI:
         if hasattr(self, 'thread') and self.thread.is_alive():
             self.thread.join()
         self.root.destroy()
+    
+    def on_key_press(self, key):
+        try:
+            if key == self.keybind:
+                if self.is_running:
+                    self.stop_sending()
+                else:
+                    self.start_sending()
+        except Exception as e:
+            self.log_message(f"Error in key listener: {e}")
 
-# Create the main application window and run the GUI
-if __name__ == '__main__':
-    root = ctk.CTk()
-    app = Anti_AFK_GUI(root)
-    root.mainloop()
+    def key_listener(self):
+        with keyboard.Listener(on_press=self.on_key_press) as listener:
+            listener.join()

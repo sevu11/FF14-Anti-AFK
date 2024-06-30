@@ -9,6 +9,7 @@ import os
 from datetime import datetime, timedelta
 from PIL import Image, ImageTk
 from utils import load_key, save_key
+from pynput import keyboard
 
 class Anti_AFK_GUI:
     def __init__(self, root):
