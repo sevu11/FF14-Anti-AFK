@@ -11,6 +11,7 @@ from utils import load_key, save_key
 from Xlib import X, display
 from ewmh import EWMH
 from pynput import keyboard
+import subprocess 
 
 class Anti_AFK_GUI:
     def __init__(self, root):
@@ -88,13 +89,23 @@ class Anti_AFK_GUI:
         self.is_running = False
         self.interval = 10 * 60
         self.target_window_title = "FINAL FANTASY XIV"
-        self.keybind = keyboard.Key.f12
 
-        
+        self.keybind = keyboard.Key.f12  # Default value
+        self.load_config()  # Load config values
+
         self.listener_thread = threading.Thread(target=self.key_listener)
         self.listener_thread.daemon = True
         self.listener_thread.start()
                 
+    def load_config(self):
+        try:
+            with open('config.json', 'r') as config_file:
+                config = json.load(config_file)
+                self.key_var.set(config.get("key", "CTRL"))
+                self.keybind = getattr(keyboard.Key, config.get("start_stop_key", "F12").lower())
+        except Exception as e:
+            self.log_message(f"Error loading config: {e}")
+        
     def show_alert(self, message):
         self.alert_label.config(text=message)
         self.alert_label.pack(pady=25, padx=25)
@@ -137,6 +148,8 @@ class Anti_AFK_GUI:
                     ).value
                     if window_title.decode('utf-8') == self.target_window_title:
                         target_window_found = True
+                        # Activate the window using xdotool
+                        subprocess.run(["xdotool", "windowactivate", str(window_id)])
                         break
 
                 if target_window_found:
@@ -204,3 +217,8 @@ class Anti_AFK_GUI:
     def key_listener(self):
         with keyboard.Listener(on_press=self.on_key_press) as listener:
             listener.join()
+
+if __name__ == "__main__":
+    root = ctk.CTk()
+    app = Anti_AFK_GUI(root)
+    root.mainloop()
